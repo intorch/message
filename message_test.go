@@ -15,31 +15,49 @@
 package message
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 )
 
-func TestBody_JSON(t *testing.T) {
+func TestNew(t *testing.T) {
 	assert := assert.New(t)
-	body := Body{}
 
-	body["hello"] = "world"
-	js, err := body.JSON()
+	header := Header{}
+	header.Add("hello", "world")
 
+	str := "{\"hello\":\"world\"}"
+	body := NewBody(str)
+
+	msg := New(header, body)
+
+	assert.NotNil(msg)
+	assert.NotNil(msg.Header)
+	assert.NotNil(msg.Body)
+
+	assert.True(msg.Header.Exist("hello"))
+
+	json, err := msg.Body.JSON()
 	assert.Nil(err)
-	assert.NotEmpty(js)
-	assert.Equal(js, "{\"hello\":\"world\"}")
+	assert.Equal(json, str)
 }
 
-func TestNewBody(t *testing.T) {
+func TestMessage_JSON(t *testing.T) {
 	assert := assert.New(t)
 
-	body := NewBody("{\"hello\": \"world\"}")
+	strBody := "{\"hello\":\"world\"}"
+	strHeader := "{\"hello\":\"world\"}"
 
-	assert.NotNil(body)
-	assert.NotEmpty(body)
-	assert.Len(body, 1)
-	assert.Contains(body, "hello")
-	assert.Equal(body["hello"].(string), "world")
+	header := Header{}
+	header.Add("hello", "world")
+
+	body := NewBody(strBody)
+
+	msg := New(header, body)
+	str, err := msg.JSON()
+
+	assert.Nil(err)
+	assert.NotEmpty(str)
+	assert.Equal(str, fmt.Sprintf("{\"header\":%s,\"body\":%s,\"status\":%d}", strHeader, strBody, 0))
 }
