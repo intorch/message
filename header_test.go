@@ -163,5 +163,4 @@ func TestHeader_Exist1000(t *testing.T) {
 	}
 
 	assert.Len(header, 1000)
-
 }
