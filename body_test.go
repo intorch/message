@@ -43,3 +43,30 @@ func TestNewBody(t *testing.T) {
 	assert.Contains(body, "hello")
 	assert.Equal(body["hello"].(string), "world")
 }
+
+func TestBody_Equals(t *testing.T) {
+	assert := assert.New(t)
+
+	body1 := NewBody("{\"hello\": \"world\"}")
+	body2 := NewBody("{\"hello\": \"world\"}")
+
+	assert.True(body1.Equals(body2))
+}
+
+func TestBody_EqualsDeep(t *testing.T) {
+	assert := assert.New(t)
+
+	body1 := NewBody("{\"hello\": {\"hello\": \"world\"}}")
+	body2 := NewBody("{\"hello\": {\"hello\": \"le monde\"}}")
+
+	assert.False(body1.Equals(body2))
+}
+
+func TestBody_EqualsFalse(t *testing.T) {
+	assert := assert.New(t)
+
+	body1 := NewBody("{\"hello\": \"world\"}")
+	body2 := NewBody("{\"hello\": \"le monde\"}")
+
+	assert.False(body1.Equals(body2))
+}

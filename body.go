@@ -14,7 +14,10 @@
 
 package message
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"reflect"
+)
 
 //Body map to store JSON payload
 type Body map[string]interface{}
@@ -41,4 +44,13 @@ func (body Body) JSON() (string, error) {
 	}
 
 	return string(js), nil
+}
+
+//Equals check if header is equals another one
+func (body Body) Equals(other Body) bool {
+	if reflect.DeepEqual(body, other) {
+		return true
+	}
+
+	return false
 }
