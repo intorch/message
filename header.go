@@ -14,6 +14,8 @@
 
 package message
 
+import "reflect"
+
 //Header map to store some Message properties
 type Header map[string]string
 
@@ -43,4 +45,13 @@ func (header Header) Exist(key string) bool {
 	}
 
 	return true
+}
+
+//Equals check if header is equals another one
+func (header Header) Equals(other Header) bool {
+	if reflect.DeepEqual(header, other) {
+		return true
+	}
+
+	return false
 }

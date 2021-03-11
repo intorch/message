@@ -178,3 +178,44 @@ func TestHeader_Exist1000(t *testing.T) {
 
 	assert.Len(header, 1000)
 }
+
+func TestHeader_Equals(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{}
+	header2 := Header{}
+	for i := 0; i < 1000; i++ {
+		header1.Add(strconv.Itoa(i), fmt.Sprintf("Some Test %d", i))
+		header2.Add(strconv.Itoa(i), fmt.Sprintf("Some Test %d", i))
+	}
+
+	assert.True(header1.Equals(header2))
+}
+
+func TestHeader_EqualsInverse(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{}
+	header2 := Header{}
+	for i := 0; i < 1000; i++ {
+		header1.Add(strconv.Itoa(i), fmt.Sprintf("Some Test %d", i))
+	}
+
+	for i := 999; i >= 0; i-- {
+		header2.Add(strconv.Itoa(i), fmt.Sprintf("Some Test %d", i))
+	}
+
+	assert.True(header1.Equals(header2))
+}
+
+func TestHeader_EqualsError(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{}
+	header2 := Header{}
+
+	header1.Add("hello", "world")
+	header2.Add("hello", "le monde")
+
+	assert.False(header1.Equals(header2))
+}
