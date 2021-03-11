@@ -219,3 +219,12 @@ func TestHeader_EqualsError(t *testing.T) {
 
 	assert.False(header1.Equals(header2))
 }
+
+func TestHeader_EqualsNil(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{}
+	header1.Add("hello", "world")
+
+	assert.False(header1.Equals(nil))
+}

@@ -49,9 +49,13 @@ func (header Header) Exist(key string) bool {
 
 //Equals check if header is equals another one
 func (header Header) Equals(other Header) bool {
-	if reflect.DeepEqual(header, other) {
-		return true
+	if other == nil {
+		return false
 	}
 
-	return false
+	if !reflect.DeepEqual(header, other) {
+		return false
+	}
+
+	return true
 }

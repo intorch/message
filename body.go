@@ -48,9 +48,13 @@ func (body Body) JSON() (string, error) {
 
 //Equals check if header is equals another one
 func (body Body) Equals(other Body) bool {
-	if reflect.DeepEqual(body, other) {
-		return true
+	if other == nil {
+		return false
 	}
 
-	return false
+	if !reflect.DeepEqual(body, other) {
+		return false
+	}
+
+	return true
 }

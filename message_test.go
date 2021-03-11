@@ -61,3 +61,187 @@ func TestMessage_JSON(t *testing.T) {
 	assert.NotEmpty(str)
 	assert.Equal(str, fmt.Sprintf("{\"header\":%s,\"body\":%s,\"status\":%d}", strHeader, strBody, 0))
 }
+
+func TestMessage_EqualsFalseHeader1Nil(t *testing.T) {
+	assert := assert.New(t)
+
+	body1 := NewBody("{\"hello\":\"world\"}")
+	msg1 := New(nil, body1)
+
+	header2 := Header{"hello": "world"}
+	body2 := NewBody("{\"hello\":\"world\"}")
+	msg2 := New(header2, body2)
+
+	assert.False(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsFalseHeader2Nil(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "world"}
+	body1 := NewBody("{\"hello\":\"world\"}")
+	msg1 := New(header1, body1)
+
+	body2 := NewBody("{\"hello\":\"world\"}")
+	msg2 := New(nil, body2)
+
+	assert.False(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsFalseHeader1(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "le monde"}
+	body1 := NewBody("{\"hello\":\"world\"}")
+	msg1 := New(header1, body1)
+
+	header2 := Header{"hello": "world"}
+	body2 := NewBody("{\"hello\":\"world\"}")
+	msg2 := New(header2, body2)
+
+	assert.False(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsFalseHeader2(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "world"}
+	body1 := NewBody("{\"hello\":\"world\"}")
+	msg1 := New(header1, body1)
+
+	header2 := Header{"hello": "le monde"}
+	body2 := NewBody("{\"hello\":\"world\"}")
+	msg2 := New(header2, body2)
+
+	assert.False(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsFalseBody1Nil(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "world"}
+	msg1 := New(header1, nil)
+
+	header2 := Header{"hello": "world"}
+	body2 := NewBody("{\"hello\":\"world\"}")
+	msg2 := New(header2, body2)
+
+	assert.False(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsFalseBody2Nil(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "world"}
+	body1 := NewBody("{\"hello\":\"world\"}")
+	msg1 := New(header1, body1)
+
+	header2 := Header{"hello": "world"}
+	msg2 := New(header2, nil)
+
+	assert.False(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsFalseBody1(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "world"}
+	body1 := NewBody("{\"hello\":\"le monde\"}")
+	msg1 := New(header1, body1)
+
+	header2 := Header{"hello": "world"}
+	body2 := NewBody("{\"hello\":\"world\"}")
+	msg2 := New(header2, body2)
+
+	assert.False(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsFalseBody2(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "world"}
+	body1 := NewBody("{\"hello\":\"world\"}")
+	msg1 := New(header1, body1)
+
+	header2 := Header{"hello": "world"}
+	body2 := NewBody("{\"hello\":\"le mond\"}")
+	msg2 := New(header2, body2)
+
+	assert.False(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsTrueStatusNotSet(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "world"}
+	body1 := NewBody("{\"hello\":\"world\"}")
+	msg1 := New(header1, body1)
+
+	header2 := Header{"hello": "world"}
+	body2 := NewBody("{\"hello\":\"world\"}")
+	msg2 := New(header2, body2)
+
+	assert.True(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsTrueStatus(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "world"}
+	body1 := NewBody("{\"hello\":\"world\"}")
+	msg1 := New(header1, body1)
+	msg1.Status = 1
+
+	header2 := Header{"hello": "world"}
+	body2 := NewBody("{\"hello\":\"world\"}")
+	msg2 := New(header2, body2)
+	msg2.Status = 1
+
+	assert.True(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsFalseStatus2NotSet(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "world"}
+	body1 := NewBody("{\"hello\":\"world\"}")
+	msg1 := New(header1, body1)
+	msg1.Status = 1
+
+	header2 := Header{"hello": "world"}
+	body2 := NewBody("{\"hello\":\"world\"}")
+	msg2 := New(header2, body2)
+
+	assert.False(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsFalseStatus1NotSet(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "world"}
+	body1 := NewBody("{\"hello\":\"world\"}")
+	msg1 := New(header1, body1)
+
+	header2 := Header{"hello": "world"}
+	body2 := NewBody("{\"hello\":\"world\"}")
+	msg2 := New(header2, body2)
+	msg2.Status = 1
+
+	assert.False(msg1.Equals(msg2))
+}
+
+func TestMessage_EqualsFalseStatus(t *testing.T) {
+	assert := assert.New(t)
+
+	header1 := Header{"hello": "world"}
+	body1 := NewBody("{\"hello\":\"world\"}")
+	msg1 := New(header1, body1)
+	msg1.Status = 1
+
+	header2 := Header{"hello": "world"}
+	body2 := NewBody("{\"hello\":\"world\"}")
+	msg2 := New(header2, body2)
+	msg2.Status = 2
+
+	assert.False(msg1.Equals(msg2))
+}

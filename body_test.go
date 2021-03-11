@@ -70,3 +70,11 @@ func TestBody_EqualsFalse(t *testing.T) {
 
 	assert.False(body1.Equals(body2))
 }
+
+func TestBody_EqualsNil(t *testing.T) {
+	assert := assert.New(t)
+
+	body1 := NewBody("{\"hello\": \"world\"}")
+
+	assert.False(body1.Equals(nil))
+}

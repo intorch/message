@@ -14,7 +14,9 @@
 
 package message
 
-import "encoding/json"
+import (
+	"encoding/json"
+)
 
 //Message data structure to store the transactional message
 //object;
@@ -41,4 +43,37 @@ func (msg *Message) JSON() (string, error) {
 	}
 
 	return string(bmsg), nil
+}
+
+//Equals check if header is equals another one
+func (msg Message) Equals(other *Message) bool {
+	if other == nil {
+		return false
+	}
+
+	if msg.Body != nil {
+		if !msg.Body.Equals(*other.Body) {
+			return false
+		}
+	} else {
+		if other.Body != nil {
+			return false
+		}
+	}
+
+	if msg.Header != nil {
+		if !msg.Header.Equals(*other.Header) {
+			return false
+		}
+	} else {
+		if other.Header != nil {
+			return false
+		}
+	}
+
+	if msg.Status != other.Status {
+		return false
+	}
+
+	return true
 }
