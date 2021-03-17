@@ -45,7 +45,7 @@ func (msg *Message) JSON() (string, error) {
 	return string(bmsg), nil
 }
 
-//Equals check if header is equals another one
+//Equals check if message is equals another one
 func (msg Message) Equals(other *Message) bool {
 	if other == nil {
 		return false
